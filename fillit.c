@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "libft/libft.h"
+//#include "libft/libft.h"
 #define BUF_SIZE 4096
 
 typedef struct
@@ -306,6 +306,7 @@ void	main_alg(char **s, int size, figure **t, int count)
 		{
 			if (s[j][i] == '.') // if square empty
 			{
+				// printf("[%i][%i]\n", j, i);
 				s[j][i] = 'A' + l; // put char from tetramino 
 				while ((l_a < 4) && 
 					(j + t[l]->x[l_a] < size) && 
@@ -318,7 +319,11 @@ void	main_alg(char **s, int size, figure **t, int count)
 					l_a++;
 				}
 				if (l_a == 4)
+				{
 					l++;
+					i = 0;
+					j = 0;
+				}
 				else
 				{
 					while(--l_a >= 1)
@@ -329,19 +334,24 @@ void	main_alg(char **s, int size, figure **t, int count)
 				}
 				l_a = 1;
 			}
-			if (l == count - 1)
+			if (l == count)
 				return ;
-//			if ((j == size - 1) && (i == size - 1)) //&& (l < count))
+//			if ((j == size - 1) && (i == size - 1) && (l < count))
 //			{
 //				return ;
 //			}
 			i++;
 		}
+			// printf("i = %i\n", i);
+		// printf("j = %i\n", j);
 		i = 0;
 		j++;
+		// printf("j = %i\n", j);
 	}
-	if (j == size)
-		return ;
+	if (l < count)
+	{
+		
+	}
 }
 
 int main (int argc, char **argv) 
@@ -354,7 +364,7 @@ int main (int argc, char **argv)
 	if (argc == 2)
 	{
 		str = read_file(argv[1]);
-		int count = ft_strlen(str) + 1 / 21; // num of tetraminos
+		int count = (ft_strlen(str) + 1) / 21; // num of tetraminos
 		TETRAMINO = write_figures(TETRAMINO, str);
 
 		ft_putstr(str);
@@ -364,7 +374,6 @@ int main (int argc, char **argv)
 		size = size_of_side(str);
 		square = make_square(str);
 		main_alg(square, size, TETRAMINO, count);
-
 // print square 5x5 but we have make function to print all of squares
 		int dot = 0;
 		int str = 0;
@@ -379,11 +388,11 @@ int main (int argc, char **argv)
 			dot = 0;
 			str++;
 		}
-		//print coordinate 16-th tetramino
-		printf("TETRAMINO[2] \n %d ; %d\n %d ; %d\n %d ; %d\n %d ; %d\n",   TETRAMINO[2]->x[0], TETRAMINO[2]->y[0], 
-																			TETRAMINO[2]->x[1], TETRAMINO[2]->y[1], 
-																			TETRAMINO[2]->x[2], TETRAMINO[2]->y[2], 	
-																			TETRAMINO[2]->x[3], TETRAMINO[2]->y[3]);
+		//print coordinate 16-th tetramin
+		/* printf("TETRAMINO[0] \n %d ; %d\n %d ; %d\n %d ; %d\n %d ; %d\n",   TETRAMINO[0]->x[0], TETRAMINO[0]->y[0], 
+																			TETRAMINO[0]->x[1], TETRAMINO[0]->y[1], 
+																			TETRAMINO[0]->x[2], TETRAMINO[0]->y[2], 	
+																			TETRAMINO[0]->x[3], TETRAMINO[0]->y[3]); */
 	}
 }
 
