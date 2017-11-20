@@ -19,12 +19,15 @@
 //#include "libft/libft.h"
 #define BUF_SIZE 4096
 
-typedef struct
+#define CHECK (j + t->x[l_a] < size) &&\
+	(i + t->y[l_a] < size) && (j + t->x[l_a] >= 0) &&\
+	(i + t->y[l_a] >= 0) && (s[j + t->x[l_a]][i + t->y[l_a]] == '.')
+
+typedef	struct
 {
 	int x[4];
 	int y[4];
-//	char letter;
-} figure;
+} 		figure;
 
 void	ft_putchar(char c)
 {
@@ -290,68 +293,62 @@ char 	**make_square(char *str)
 	return (square);
 }
 
+//
+int	fill(char **s, int j, int i, figure *t, int size)
+{
+	int l_a;
+
+	l_a = 1;
+	while (l_a < 4 && CHECK)
+	{
+		s[j + t->x[l_a]][i + t->y[l_a]] = s[j][i];
+		l_a++;
+	}
+	if (l_a == 4)
+		return (1);
+	else
+	{
+		while(--l_a >= 1)
+			s[j + t->x[l_a]][i + t->y[l_a]] = '.';
+		s[j][i] = '.';
+		return (0);
+	}
+}
+
 // try to write algoritm
 // s - square, size - size of side-square, tet - tetramino, count - number of tetrminos
-
-void	main_alg(char **s, int size, figure **t, int count)
+char**	main_alg(char *str, figure *t, int count)
 {
 	int i = 0; // num of sumbol 
 	int j = 0; // num of str 
 	int l = 0; // 'A' + l == symbol of figure
 	int l_a = 1; // address of sharp in tetramino 
+	int size;
+	char **s;
 
+	size = size_of_side(str);
+	s = make_square(str);
 	while (j < size)
 	{
 		while(i < size)
 		{
 			if (s[j][i] == '.') // if square empty
 			{
-				// printf("[%i][%i]\n", j, i);
 				s[j][i] = 'A' + l; // put char from tetramino 
-				while ((l_a < 4) && 
-					(j + t[l]->x[l_a] < size) && 
-					(i + t[l]->y[l_a] < size) &&
-					(j + t[l]->x[l_a] >= 0) && 
-					(i + t[l]->y[l_a] >= 0) &&
-					(s[j + t[l]->x[l_a]][i + t[l]->y[l_a]] == '.'))
-				{
-					s[j + t[l]->x[l_a]][i + t[l]->y[l_a]] = 'A' + l;
-					l_a++;
-				}
-				if (l_a == 4)
+				if (fill(s, j, i, t, size) == 1)
 				{
 					l++;
+					t++;
 					i = 0;
 					j = 0;
 				}
-				else
-				{
-					while(--l_a >= 1)
-					{
-						s[j + t[l]->x[l_a]][i + t[l]->y[l_a]] = '.';
-					}
-					s[j][i] = '.';
-				}
-				l_a = 1;
 			}
-			if (l == count)
-				return ;
-//			if ((j == size - 1) && (i == size - 1) && (l < count))
-//			{
-//				return ;
-//			}
 			i++;
 		}
-			// printf("i = %i\n", i);
-		// printf("j = %i\n", j);
 		i = 0;
 		j++;
-		// printf("j = %i\n", j);
 	}
-	if (l < count)
-	{
-		
-	}
+	return (s);
 }
 
 int main (int argc, char **argv) 
@@ -372,8 +369,7 @@ int main (int argc, char **argv)
 		printf ("count of figure = %zu\n", (ft_strlen(str) + 1) / 21);
 		printf("result = %i\n", check_if_file_is_valid(str));
 		size = size_of_side(str);
-		square = make_square(str);
-		main_alg(square, size, TETRAMINO, count);
+		square = main_alg(str, *TETRAMINO, count);
 // print square 5x5 but we have make function to print all of squares
 		int dot = 0;
 		int str = 0;
